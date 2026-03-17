@@ -41,7 +41,10 @@ const Header = ({ activeTab, onTabChange, searchQuery, onSearchChange }: HeaderP
 
         {/* Cart */}
         <div className="flex-1 flex justify-end">
-          <button className="relative p-2 hover:bg-foreground/[0.03] rounded-full transition-colors">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="relative p-2 hover:bg-foreground/[0.03] rounded-full transition-colors"
+          >
             <ShoppingBag className="w-6 h-6 text-foreground" />
             <AnimatePresence>
               {count > 0 && (
