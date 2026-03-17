@@ -41,6 +41,7 @@ const IndexContent = () => {
         {activeTab === "Início" && !searchQuery && <HeroSection />}
         <ProductGrid products={filteredProducts} title={title} />
       </main>
+      <CartDrawer />
     </div>
   );
 };

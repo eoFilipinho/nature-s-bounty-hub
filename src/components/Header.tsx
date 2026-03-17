@@ -13,7 +13,7 @@ type HeaderProps = {
 };
 
 const Header = ({ activeTab, onTabChange, searchQuery, onSearchChange }: HeaderProps) => {
-  const { count } = useCart();
+  const { count, setIsOpen } = useCart();
 
   return (
     <header className="w-full bg-popover/80 backdrop-blur-md sticky top-0 z-50 shadow-[0_1px_0_0_rgba(0,0,0,0.03)]">
