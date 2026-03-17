@@ -6,14 +6,19 @@ type CartItem = Product & { quantity: number };
 type CartContextType = {
   items: CartItem[];
   count: number;
+  total: number;
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
   addItem: (product: Product) => void;
   removeItem: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
 };
 
 const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const addItem = useCallback((product: Product) => {
     setItems((prev) => {
@@ -21,15 +26,29 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (existing) return prev.map((i) => (i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i));
       return [...prev, { ...product, quantity: 1 }];
     });
+    setIsOpen(true);
   }, []);
 
   const removeItem = useCallback((id: string) => {
     setItems((prev) => prev.filter((i) => i.id !== id));
   }, []);
 
-  const count = items.reduce((acc, i) => acc + i.quantity, 0);
+  const updateQuantity = useCallback((id: string, quantity: number) => {
+    if (quantity <= 0) {
+      setItems((prev) => prev.filter((i) => i.id !== id));
+    } else {
+      setItems((prev) => prev.map((i) => (i.id === id ? { ...i, quantity } : i)));
+    }
+  }, []);
 
-  return <CartContext.Provider value={{ items, count, addItem, removeItem }}>{children}</CartContext.Provider>;
+  const count = items.reduce((acc, i) => acc + i.quantity, 0);
+  const total = items.reduce((acc, i) => acc + i.price * i.quantity, 0);
+
+  return (
+    <CartContext.Provider value={{ items, count, total, isOpen, setIsOpen, addItem, removeItem, updateQuantity }}>
+      {children}
+    </CartContext.Provider>
+  );
 };
 
 export const useCart = () => {

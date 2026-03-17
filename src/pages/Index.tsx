@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import Header from "@/components/Header";
+import CartDrawer from "@/components/CartDrawer";
 import HeroSection from "@/components/HeroSection";
 import ProductGrid from "@/components/ProductGrid";
 import { CartProvider } from "@/context/CartContext";
@@ -40,6 +41,7 @@ const IndexContent = () => {
         {activeTab === "Início" && !searchQuery && <HeroSection />}
         <ProductGrid products={filteredProducts} title={title} />
       </main>
+      <CartDrawer />
     </div>
   );
 };
