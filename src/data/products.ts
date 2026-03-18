@@ -5,6 +5,7 @@ export type Product = {
   category: string;
   image: string;
   weight: string;
+  description: string;
 };
 
 export const categories = [
@@ -20,30 +21,30 @@ export const categories = [
 export type Category = (typeof categories)[number];
 
 export const products: Product[] = [
-  { id: "1", name: "Aveia em Flocos", price: 12.9, category: "Cereais", image: "🌾", weight: "500g" },
-  { id: "2", name: "Granola Artesanal", price: 18.5, category: "Cereais", image: "🥣", weight: "400g" },
-  { id: "3", name: "Muesli Tropical", price: 22.0, category: "Cereais", image: "🥥", weight: "350g" },
-  { id: "4", name: "Farelo de Trigo", price: 8.9, category: "Cereais", image: "🌿", weight: "300g" },
-  { id: "5", name: "Cúrcuma em Pó", price: 15.0, category: "Temperos", image: "🧡", weight: "100g" },
-  { id: "6", name: "Pimenta Caiena", price: 11.5, category: "Temperos", image: "🌶️", weight: "80g" },
-  { id: "7", name: "Canela do Ceilão", price: 19.9, category: "Temperos", image: "🪵", weight: "120g" },
-  { id: "8", name: "Gengibre Desidratado", price: 14.0, category: "Temperos", image: "🫚", weight: "100g" },
-  { id: "9", name: "Vitamina C Natural", price: 45.0, category: "Vitaminas", image: "🍊", weight: "60 cáps" },
-  { id: "10", name: "Complexo B", price: 38.0, category: "Vitaminas", image: "💛", weight: "90 cáps" },
-  { id: "11", name: "Vitamina D3", price: 32.0, category: "Vitaminas", image: "☀️", weight: "60 cáps" },
-  { id: "12", name: "Zinco Quelado", price: 28.0, category: "Vitaminas", image: "🔬", weight: "60 cáps" },
-  { id: "13", name: "Whey Vegetal", price: 89.9, category: "Suplementação", image: "💪", weight: "900g" },
-  { id: "14", name: "Creatina Pura", price: 65.0, category: "Suplementação", image: "⚡", weight: "300g" },
-  { id: "15", name: "Spirulina", price: 42.0, category: "Suplementação", image: "🌊", weight: "120 cáps" },
-  { id: "16", name: "Colágeno Hidrolisado", price: 55.0, category: "Suplementação", image: "✨", weight: "300g" },
-  { id: "17", name: "Camomila Premium", price: 16.5, category: "Chás", image: "🌼", weight: "30 sachês" },
-  { id: "18", name: "Chá Verde Orgânico", price: 21.0, category: "Chás", image: "🍵", weight: "100g" },
-  { id: "19", name: "Hibisco", price: 14.0, category: "Chás", image: "🌺", weight: "80g" },
-  { id: "20", name: "Erva-cidreira", price: 12.0, category: "Chás", image: "🍃", weight: "50g" },
-  { id: "21", name: "Chia", price: 17.5, category: "Grãos e Sementes", image: "🫘", weight: "250g" },
-  { id: "22", name: "Linhaça Dourada", price: 13.0, category: "Grãos e Sementes", image: "🌻", weight: "300g" },
-  { id: "23", name: "Quinoa Real", price: 24.0, category: "Grãos e Sementes", image: "🌾", weight: "500g" },
-  { id: "24", name: "Semente de Girassol", price: 11.0, category: "Grãos e Sementes", image: "🌻", weight: "200g" },
+  { id: "1", name: "Aveia em Flocos", price: 12.9, category: "Cereais", image: "🌾", weight: "500g", description: "Aveia em flocos finos de alta qualidade, ideal para preparar mingaus, vitaminas e receitas saudáveis. Rica em fibras solúveis e beta-glucana, auxilia no controle do colesterol e promove saciedade prolongada. Sem conservantes ou aditivos." },
+  { id: "2", name: "Granola Artesanal", price: 18.5, category: "Cereais", image: "🥣", weight: "400g", description: "Granola artesanal crocante feita com aveia, mel orgânico, castanhas e frutas secas selecionadas. Assada lentamente para garantir textura perfeita. Excelente fonte de energia para o café da manhã ou lanches intermediários." },
+  { id: "3", name: "Muesli Tropical", price: 22.0, category: "Cereais", image: "🥥", weight: "350g", description: "Muesli tropical com flocos de aveia, coco ralado, manga desidratada, abacaxi e castanha de caju. Uma explosão de sabores tropicais em cada colherada. Sem adição de açúcar, adoçado naturalmente com as frutas." },
+  { id: "4", name: "Farelo de Trigo", price: 8.9, category: "Cereais", image: "🌿", weight: "300g", description: "Farelo de trigo finamente moído, rico em fibras insolúveis que auxiliam no bom funcionamento intestinal. Versátil para adicionar em sucos, iogurtes, massas de pão e bolos integrais." },
+  { id: "5", name: "Cúrcuma em Pó", price: 15.0, category: "Temperos", image: "🧡", weight: "100g", description: "Cúrcuma (açafrão-da-terra) em pó de origem orgânica, com alta concentração de curcumina. Poderoso anti-inflamatório e antioxidante natural. Ideal para golden milk, temperar arroz, sopas e molhos." },
+  { id: "6", name: "Pimenta Caiena", price: 11.5, category: "Temperos", image: "🌶️", weight: "80g", description: "Pimenta caiena moída com intensidade moderada, perfeita para quem busca um toque picante nas refeições. Auxilia no metabolismo e na circulação sanguínea. Embalada em pote com tampa dosadora." },
+  { id: "7", name: "Canela do Ceilão", price: 19.9, category: "Temperos", image: "🪵", weight: "120g", description: "Canela do Ceilão (canela verdadeira) em pó, considerada a variedade mais nobre e aromática. Baixo teor de cumarina, segura para consumo diário. Perfeita para sobremesas, cafés especiais e chás." },
+  { id: "8", name: "Gengibre Desidratado", price: 14.0, category: "Temperos", image: "🫚", weight: "100g", description: "Gengibre desidratado em lascas finas, concentrando todo o sabor e propriedades da raiz fresca. Anti-inflamatório e digestivo natural. Ideal para chás, temperos e preparações culinárias diversas." },
+  { id: "9", name: "Vitamina C Natural", price: 45.0, category: "Vitaminas", image: "🍊", weight: "60 cáps", description: "Vitamina C extraída de acerola orgânica, com 500mg por cápsula. Poderoso antioxidante que fortalece o sistema imunológico e auxilia na absorção de ferro. Livre de corantes e aromatizantes artificiais." },
+  { id: "10", name: "Complexo B", price: 38.0, category: "Vitaminas", image: "💛", weight: "90 cáps", description: "Complexo B completo com todas as 8 vitaminas do grupo B em doses otimizadas. Essencial para o metabolismo energético, saúde do sistema nervoso e formação de células sanguíneas. Formulação vegana." },
+  { id: "11", name: "Vitamina D3", price: 32.0, category: "Vitaminas", image: "☀️", weight: "60 cáps", description: "Vitamina D3 (colecalciferol) com 2000 UI por cápsula, em base de óleo de coco para melhor absorção. Essencial para saúde óssea, imunidade e bem-estar geral. Recomendada especialmente nos meses de inverno." },
+  { id: "12", name: "Zinco Quelado", price: 28.0, category: "Vitaminas", image: "🔬", weight: "60 cáps", description: "Zinco quelado bisglicinato com 30mg por cápsula, forma de alta biodisponibilidade. Fundamental para imunidade, saúde da pele, cabelos e unhas. Tecnologia de quelação para absorção superior." },
+  { id: "13", name: "Whey Vegetal", price: 89.9, category: "Suplementação", image: "💪", weight: "900g", description: "Proteína vegetal premium com blend de ervilha, arroz e amaranto, oferecendo 25g de proteína por dose. Perfil completo de aminoácidos essenciais. Sabor neutro, sem adoçantes artificiais. Ideal para atletas e veganos." },
+  { id: "14", name: "Creatina Pura", price: 65.0, category: "Suplementação", image: "⚡", weight: "300g", description: "Creatina monoidratada micronizada com 99,9% de pureza. Auxilia no ganho de força, potência muscular e performance em exercícios de alta intensidade. 100 doses por embalagem. Selo Creapure®." },
+  { id: "15", name: "Spirulina", price: 42.0, category: "Suplementação", image: "🌊", weight: "120 cáps", description: "Spirulina orgânica em cápsulas de 500mg, superalimento com mais de 60% de proteína. Rica em ferro, vitaminas do complexo B e antioxidantes. Cultivada em águas controladas sem contaminantes." },
+  { id: "16", name: "Colágeno Hidrolisado", price: 55.0, category: "Suplementação", image: "✨", weight: "300g", description: "Colágeno hidrolisado tipo I e III com peptídeos bioativos de alta absorção. Auxilia na firmeza da pele, saúde das articulações e fortalecimento de cabelos e unhas. Dissolve facilmente em água." },
+  { id: "17", name: "Camomila Premium", price: 16.5, category: "Chás", image: "🌼", weight: "30 sachês", description: "Camomila premium com flores inteiras selecionadas de origem orgânica. Propriedades calmantes e digestivas reconhecidas. Sachês individuais em envelope de papel que preserva aroma e frescor. Perfeita para relaxar antes de dormir." },
+  { id: "18", name: "Chá Verde Orgânico", price: 21.0, category: "Chás", image: "🍵", weight: "100g", description: "Chá verde orgânico de folhas inteiras, colhido na primeira safra para máximo teor de catequinas e L-teanina. Termogênico natural que auxilia no metabolismo. Sabor suave e levemente adstringente." },
+  { id: "19", name: "Hibisco", price: 14.0, category: "Chás", image: "🌺", weight: "80g", description: "Flores de hibisco desidratadas com cor rubi intenso e sabor levemente ácido e refrescante. Rico em antocianinas e vitamina C. Auxilia na redução da retenção de líquidos. Pode ser consumido quente ou gelado." },
+  { id: "20", name: "Erva-cidreira", price: 12.0, category: "Chás", image: "🍃", weight: "50g", description: "Erva-cidreira (melissa) desidratada com aroma cítrico suave e propriedades calmantes. Auxilia na digestão e no alívio de cólicas. Cultivada sem agrotóxicos em pequenas propriedades familiares." },
+  { id: "21", name: "Chia", price: 17.5, category: "Grãos e Sementes", image: "🫘", weight: "250g", description: "Sementes de chia selecionadas, ricas em ômega-3 vegetal, fibras e proteínas. Absorvem até 12x seu peso em água, promovendo saciedade. Versáteis para pudins, smoothies, saladas e receitas diversas." },
+  { id: "22", name: "Linhaça Dourada", price: 13.0, category: "Grãos e Sementes", image: "🌻", weight: "300g", description: "Linhaça dourada em grãos, fonte excepcional de lignanas, ômega-3 e fibras. A variedade dourada possui sabor mais suave que a marrom. Ideal para consumir triturada em sucos, vitaminas e receitas integrais." },
+  { id: "23", name: "Quinoa Real", price: 24.0, category: "Grãos e Sementes", image: "🌾", weight: "500g", description: "Quinoa real boliviana em grãos, considerada um superalimento com todos os aminoácidos essenciais. Rica em ferro, magnésio e fibras. Versátil para substituir arroz, preparar saladas e tabules nutritivos." },
+  { id: "24", name: "Semente de Girassol", price: 11.0, category: "Grãos e Sementes", image: "🌻", weight: "200g", description: "Sementes de girassol descascadas e cruas, fonte de vitamina E, selênio e magnésio. Excelente para snacks saudáveis, granolas caseiras, saladas e decoração de pães artesanais. Sem sal adicionado." },
 ];
 
 export const featuredProducts = products.filter((_, i) => [0, 4, 8, 12, 16, 20].includes(i));

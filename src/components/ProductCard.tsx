@@ -1,16 +1,19 @@
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const { addItem } = useCart();
+  const navigate = useNavigate();
 
   return (
     <motion.div
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className="group rounded-lg shadow-card hover:shadow-card-hover transition-shadow bg-popover overflow-hidden"
+      className="group rounded-lg shadow-card hover:shadow-card-hover transition-shadow bg-popover overflow-hidden cursor-pointer"
+      onClick={() => navigate(`/produto/${product.id}`)}
     >
       {/* Image area */}
       <div className="aspect-square bg-accent flex items-center justify-center text-5xl select-none">
