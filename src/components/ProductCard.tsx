@@ -16,8 +16,13 @@ const ProductCard = ({ product }: { product: Product }) => {
       onClick={() => navigate(`/produto/${product.id}`)}
     >
       {/* Image area */}
-      <div className="aspect-square bg-accent flex items-center justify-center text-5xl select-none">
-        {product.image}
+      <div className="aspect-square bg-accent flex items-center justify-center overflow-hidden">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+        />
       </div>
 
       {/* Info */}
