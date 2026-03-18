@@ -33,7 +33,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             R$ {product.price.toFixed(2).replace(".", ",")}
           </span>
           <button
-            onClick={() => addItem(product)}
+            onClick={(e) => { e.stopPropagation(); addItem(product); }}
             className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-primary hover:bg-primary/10 px-3 py-1.5 rounded-full transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
