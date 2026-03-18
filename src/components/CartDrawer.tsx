@@ -45,8 +45,8 @@ const CartDrawer = () => {
                     exit={{ opacity: 0, x: -20 }}
                     className="flex gap-4 py-4 border-b border-border/50 last:border-0"
                   >
-                    <div className="w-14 h-14 rounded-xl bg-muted flex items-center justify-center text-2xl shrink-0">
-                      {item.image}
+                    <div className="w-14 h-14 rounded-xl bg-muted overflow-hidden shrink-0">
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{item.name}</p>
