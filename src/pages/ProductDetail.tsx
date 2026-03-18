@@ -86,8 +86,8 @@ const ProductDetailContent = () => {
           className="grid grid-cols-1 md:grid-cols-2 gap-12"
         >
           {/* Image */}
-          <div className="aspect-square bg-accent rounded-2xl flex items-center justify-center text-[120px] select-none">
-            {product.image}
+          <div className="aspect-square bg-accent rounded-2xl overflow-hidden">
+            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
           </div>
 
           {/* Info */}
