@@ -35,7 +35,7 @@ const Header = ({ activeTab, onTabChange, searchQuery, onSearchChange }: HeaderP
         {/* Logo */}
         <div className="flex-1 flex justify-center">
           <h1 className="font-display text-2xl font-semibold tracking-tight text-foreground">
-            Essência <span className="text-primary">Pura</span>
+            Palace <span className="text-primary">Saúde & Performance</span>
           </h1>
         </div>
 
