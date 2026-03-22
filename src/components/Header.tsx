@@ -41,7 +41,7 @@ const Header = ({ activeTab, onTabChange, searchQuery, onSearchChange }: HeaderP
         </div>
 
         {/* Cart */}
-        <div className="flex-1 flex justify-end">
+        <div className="flex-1 flex justify-end items-center gap-2">
           <button
             onClick={() => setIsOpen(true)}
             className="relative p-2 hover:bg-foreground/[0.03] rounded-full transition-colors"
@@ -60,6 +60,7 @@ const Header = ({ activeTab, onTabChange, searchQuery, onSearchChange }: HeaderP
               )}
             </AnimatePresence>
           </button>
+          <LoginBox />
         </div>
       </div>
 
