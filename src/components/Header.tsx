@@ -6,6 +6,68 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = ["Início", "Produtos", "Cereais", "Temperos", "Vitaminas", "Suplementação", "Chás", "Grãos e Sementes"];
 
+const LoginBox = () => {
+  const [open, setOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="p-2 hover:bg-foreground/[0.03] rounded-full transition-colors"
+        aria-label="Login"
+      >
+        <User className="w-6 h-6 text-foreground" />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="absolute right-0 top-12 w-72 bg-popover border border-border rounded-xl shadow-lg p-5 z-50"
+          >
+            <h3 className="text-sm font-bold text-foreground mb-4">
+              {isLogin ? "Entrar" : "Criar Conta"}
+            </h3>
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
+              {!isLogin && (
+                <input
+                  type="text"
+                  placeholder="Nome completo"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground"
+                />
+              )}
+              <input
+                type="email"
+                placeholder="E-mail"
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground"
+              />
+              <input
+                type="password"
+                placeholder="Senha"
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground"
+              />
+              <button
+                type="submit"
+                className="w-full bg-primary text-primary-foreground rounded-lg py-2 text-sm font-semibold hover:bg-primary/90 transition-colors"
+              >
+                {isLogin ? "Entrar" : "Registrar"}
+              </button>
+            </form>
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="mt-3 text-xs text-muted-foreground hover:text-foreground transition-colors w-full text-center"
+            >
+              {isLogin ? "Não tem conta? Criar conta" : "Já tem conta? Entrar"}
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 type HeaderProps = {
   activeTab: string;
   onTabChange: (tab: string) => void;
