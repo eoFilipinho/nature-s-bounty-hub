@@ -1,4 +1,5 @@
-import { Search, ShoppingBag } from "lucide-react";
+import { Search, ShoppingBag, User } from "lucide-react";
+import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { categories } from "@/data/products";
 import { motion, AnimatePresence } from "framer-motion";
