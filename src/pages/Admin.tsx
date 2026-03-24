@@ -61,6 +61,26 @@ const Admin = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const fetchProducts = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      toast.error("Erro ao carregar produtos");
+    } else {
+      setProducts(data || []);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (authenticated) {
+      fetchProducts();
+    }
+  }, [authenticated]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,25 +127,6 @@ const Admin = () => {
       </div>
     );
   }
-
-  const fetchProducts = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      toast.error("Erro ao carregar produtos");
-    } else {
-      setProducts(data || []);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   const openCreate = () => {
     setEditingProduct(null);
