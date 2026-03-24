@@ -1,0 +1,411 @@
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
+import { Plus, Pencil, Trash2, ArrowLeft, Package } from "lucide-react";
+import { Link } from "react-router-dom";
+
+const CATEGORIES = ["Cereais", "Temperos", "Vitaminas", "Suplementação", "Chás", "Grãos e Sementes"];
+
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  image_url: string | null;
+  weight: string | null;
+  description: string | null;
+  stock_quantity: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+const emptyForm = {
+  name: "",
+  price: "",
+  category: "",
+  image_url: "",
+  weight: "",
+  description: "",
+  stock_quantity: "0",
+  is_active: true,
+};
+
+const Admin = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [form, setForm] = useState(emptyForm);
+  const [saving, setSaving] = useState(false);
+
+  const fetchProducts = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      toast.error("Erro ao carregar produtos");
+    } else {
+      setProducts(data || []);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const openCreate = () => {
+    setEditingProduct(null);
+    setForm(emptyForm);
+    setDialogOpen(true);
+  };
+
+  const openEdit = (product: Product) => {
+    setEditingProduct(product);
+    setForm({
+      name: product.name,
+      price: String(product.price),
+      category: product.category,
+      image_url: product.image_url || "",
+      weight: product.weight || "",
+      description: product.description || "",
+      stock_quantity: String(product.stock_quantity),
+      is_active: product.is_active,
+    });
+    setDialogOpen(true);
+  };
+
+  const handleSave = async () => {
+    if (!form.name || !form.price || !form.category) {
+      toast.error("Preencha nome, preço e categoria");
+      return;
+    }
+
+    setSaving(true);
+    const payload = {
+      name: form.name,
+      price: parseFloat(form.price),
+      category: form.category,
+      image_url: form.image_url || null,
+      weight: form.weight || null,
+      description: form.description || null,
+      stock_quantity: parseInt(form.stock_quantity) || 0,
+      is_active: form.is_active,
+    };
+
+    if (editingProduct) {
+      const { error } = await supabase
+        .from("products")
+        .update(payload)
+        .eq("id", editingProduct.id);
+
+      if (error) {
+        toast.error("Erro ao atualizar produto");
+      } else {
+        toast.success("Produto atualizado!");
+        setDialogOpen(false);
+        fetchProducts();
+      }
+    } else {
+      const { error } = await supabase.from("products").insert(payload);
+
+      if (error) {
+        toast.error("Erro ao criar produto");
+      } else {
+        toast.success("Produto criado!");
+        setDialogOpen(false);
+        fetchProducts();
+      }
+    }
+    setSaving(false);
+  };
+
+  const handleDelete = async (product: Product) => {
+    if (!confirm(`Deseja excluir "${product.name}"?`)) return;
+
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", product.id);
+
+    if (error) {
+      toast.error("Erro ao excluir produto");
+    } else {
+      toast.success("Produto excluído!");
+      fetchProducts();
+    }
+  };
+
+  const toggleActive = async (product: Product) => {
+    const { error } = await supabase
+      .from("products")
+      .update({ is_active: !product.is_active })
+      .eq("id", product.id);
+
+    if (error) {
+      toast.error("Erro ao atualizar status");
+    } else {
+      fetchProducts();
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="bg-popover border-b border-border sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <Package className="w-5 h-5 text-primary" />
+            <h1 className="text-lg font-semibold text-foreground">Gerenciar Produtos</h1>
+          </div>
+          <Button onClick={openCreate} className="gap-2">
+            <Plus className="w-4 h-4" />
+            Novo Produto
+          </Button>
+        </div>
+      </header>
+
+      {/* Content */}
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        {loading ? (
+          <div className="text-center py-20 text-muted-foreground">Carregando...</div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-20">
+            <Package className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+            <p className="text-muted-foreground">Nenhum produto cadastrado</p>
+            <Button onClick={openCreate} className="mt-4 gap-2">
+              <Plus className="w-4 h-4" />
+              Adicionar primeiro produto
+            </Button>
+          </div>
+        ) : (
+          <div className="rounded-lg border border-border overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50">
+                  <TableHead>Produto</TableHead>
+                  <TableHead>Categoria</TableHead>
+                  <TableHead className="text-right">Preço</TableHead>
+                  <TableHead className="text-right">Estoque</TableHead>
+                  <TableHead className="text-center">Status</TableHead>
+                  <TableHead className="text-right">Ações</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {products.map((product) => (
+                  <TableRow key={product.id}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        {product.image_url && (
+                          <img
+                            src={product.image_url}
+                            alt={product.name}
+                            className="w-10 h-10 rounded-lg object-cover bg-muted"
+                          />
+                        )}
+                        <div>
+                          <p className="font-medium text-foreground">{product.name}</p>
+                          <p className="text-xs text-muted-foreground">{product.weight}</p>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">{product.category}</TableCell>
+                    <TableCell className="text-right font-medium">
+                      R$ {Number(product.price).toFixed(2)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <span
+                        className={`font-medium ${
+                          product.stock_quantity <= 5
+                            ? "text-destructive"
+                            : product.stock_quantity <= 20
+                            ? "text-yellow-600"
+                            : "text-foreground"
+                        }`}
+                      >
+                        {product.stock_quantity}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <button
+                        onClick={() => toggleActive(product)}
+                        className={`text-xs px-2.5 py-1 rounded-full font-medium transition-colors ${
+                          product.is_active
+                            ? "bg-primary/10 text-primary"
+                            : "bg-muted text-muted-foreground"
+                        }`}
+                      >
+                        {product.is_active ? "Ativo" : "Inativo"}
+                      </button>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => openEdit(product)}
+                          title="Editar"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDelete(product)}
+                          title="Excluir"
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </main>
+
+      {/* Product Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {editingProduct ? "Editar Produto" : "Novo Produto"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 pt-2">
+            <div>
+              <Label htmlFor="name">Nome *</Label>
+              <Input
+                id="name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Nome do produto"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="price">Preço (R$) *</Label>
+                <Input
+                  id="price"
+                  type="number"
+                  step="0.01"
+                  value={form.price}
+                  onChange={(e) => setForm({ ...form, price: e.target.value })}
+                  placeholder="0.00"
+                />
+              </div>
+              <div>
+                <Label htmlFor="stock">Estoque</Label>
+                <Input
+                  id="stock"
+                  type="number"
+                  value={form.stock_quantity}
+                  onChange={(e) => setForm({ ...form, stock_quantity: e.target.value })}
+                  placeholder="0"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Categoria *</Label>
+                <Select
+                  value={form.category}
+                  onValueChange={(val) => setForm({ ...form, category: val })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CATEGORIES.map((cat) => (
+                      <SelectItem key={cat} value={cat}>
+                        {cat}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="weight">Peso/Quantidade</Label>
+                <Input
+                  id="weight"
+                  value={form.weight}
+                  onChange={(e) => setForm({ ...form, weight: e.target.value })}
+                  placeholder="Ex: 500g, 60 cáps"
+                />
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="image_url">URL da Imagem</Label>
+              <Input
+                id="image_url"
+                value={form.image_url}
+                onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                placeholder="https://..."
+              />
+            </div>
+            <div>
+              <Label htmlFor="description">Descrição</Label>
+              <Textarea
+                id="description"
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                placeholder="Descrição do produto"
+                rows={3}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="is_active"
+                checked={form.is_active}
+                onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
+                className="rounded"
+              />
+              <Label htmlFor="is_active">Produto ativo (visível na loja)</Label>
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                Cancelar
+              </Button>
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? "Salvando..." : editingProduct ? "Salvar" : "Criar"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+export default Admin;
