@@ -52,13 +52,15 @@ const emptyForm = {
 };
 
 const Admin = () => {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
-
   const fetchProducts = async () => {
     setLoading(true);
     const { data, error } = await supabase
@@ -75,8 +77,56 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    if (authenticated) {
+      fetchProducts();
+    }
+  }, [authenticated]);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === "admin") {
+      setAuthenticated(true);
+      setLoginError(false);
+    } else {
+      setLoginError(true);
+    }
+  };
+
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="w-full max-w-sm mx-auto p-8">
+          <div className="text-center mb-8">
+            <Package className="w-10 h-10 text-primary mx-auto mb-3" />
+            <h1 className="text-xl font-semibold text-foreground">Painel Admin</h1>
+            <p className="text-sm text-muted-foreground mt-1">Digite a senha para acessar</p>
+          </div>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <Label htmlFor="admin-password">Senha</Label>
+              <Input
+                id="admin-password"
+                type="password"
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setLoginError(false); }}
+                placeholder="Senha do admin"
+                autoFocus
+              />
+              {loginError && (
+                <p className="text-sm text-destructive mt-1">Senha incorreta</p>
+              )}
+            </div>
+            <Button type="submit" className="w-full">Entrar</Button>
+            <div className="text-center">
+              <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                ← Voltar para a loja
+              </Link>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   const openCreate = () => {
     setEditingProduct(null);
