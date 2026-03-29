@@ -1,5 +1,6 @@
-import { Search, ShoppingBag, User } from "lucide-react";
+import { Search, ShoppingBag, User, Package } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { categories } from "@/data/products";
 import { motion, AnimatePresence } from "framer-motion";
@@ -104,6 +105,13 @@ const Header = ({ activeTab, onTabChange, searchQuery, onSearchChange }: HeaderP
 
         {/* Cart */}
         <div className="flex-1 flex justify-end items-center gap-2">
+          <Link
+            to="/meus-pedidos"
+            className="p-2 hover:bg-foreground/[0.03] rounded-full transition-colors"
+            aria-label="Meus Pedidos"
+          >
+            <Package className="w-6 h-6 text-foreground" />
+          </Link>
           <button
             onClick={() => setIsOpen(true)}
             className="relative p-2 hover:bg-foreground/[0.03] rounded-full transition-colors"
