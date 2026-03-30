@@ -61,7 +61,7 @@ const ProductDetailContent = () => {
             className="font-display text-xl font-semibold tracking-tight text-foreground cursor-pointer"
             onClick={() => navigate("/")}
           >
-            Essência <span className="text-primary">Pura</span>
+            Palace <span className="text-primary">Saúde & Performance</span>
           </h1>
           <button
             onClick={() => setIsOpen(true)}
