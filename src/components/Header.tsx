@@ -83,9 +83,16 @@ const Header = ({ activeTab, onTabChange, searchQuery, onSearchChange }: HeaderP
     <header className="w-full bg-popover/80 backdrop-blur-md sticky top-0 z-50 shadow-[0_1px_0_0_rgba(0,0,0,0.03)]">
       {/* Top Row */}
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        {/* Search */}
-        <div className="flex-1 max-w-md">
-          <div className="relative group">
+        {/* Logo */}
+        <div className="flex-shrink-0">
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-foreground">
+            Palace <span className="text-primary">Saúde & Performance</span>
+          </h1>
+        </div>
+
+        {/* Search + Icons */}
+        <div className="flex items-center gap-3">
+          <div className="relative group max-w-md w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40" />
             <input
               value={searchQuery}
@@ -94,17 +101,6 @@ const Header = ({ activeTab, onTabChange, searchQuery, onSearchChange }: HeaderP
               placeholder="Buscar sementes, chás..."
             />
           </div>
-        </div>
-
-        {/* Logo */}
-        <div className="flex-1 flex justify-center">
-          <h1 className="font-display text-2xl font-semibold tracking-tight text-foreground">
-            Palace <span className="text-primary">Saúde & Performance</span>
-          </h1>
-        </div>
-
-        {/* Cart */}
-        <div className="flex-1 flex justify-end items-center gap-2">
           <Link
             to="/meus-pedidos"
             className="p-2 hover:bg-foreground/[0.03] rounded-full transition-colors"
