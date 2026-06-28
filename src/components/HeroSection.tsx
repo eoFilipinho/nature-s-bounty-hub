@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 
 const HeroSection = () => (
-  <section className="py-16 text-center space-y-4">
+  <section className="py-8 text-center space-y-2">
     <motion.h2
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="font-display text-5xl font-semibold text-foreground leading-tight"
+      className="font-display text-3xl font-semibold text-foreground leading-tight"
     >
       A curadoria da terra,
       <br />
