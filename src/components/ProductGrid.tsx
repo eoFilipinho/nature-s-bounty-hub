@@ -3,9 +3,9 @@ import type { Product } from "@/data/products";
 
 const ProductGrid = ({ products, title }: { products: Product[]; title?: string }) => {
   return (
-    <section className="py-8">
+    <section className="py-4">
       {title && (
-        <h2 className="font-display text-3xl font-semibold mb-8 text-foreground">{title}</h2>
+        <h2 className="font-display text-3xl font-semibold mb-4 text-foreground">{title}</h2>
       )}
       {products.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
