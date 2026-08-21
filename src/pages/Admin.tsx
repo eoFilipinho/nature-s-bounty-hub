@@ -61,6 +61,8 @@ const Admin = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("Todos");
   const fetchProducts = async () => {
     setLoading(true);
     const { data, error } = await supabase
