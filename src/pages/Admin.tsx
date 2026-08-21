@@ -69,7 +69,7 @@ const Admin = () => {
       .order("created_at", { ascending: false });
 
     if (error) {
-      toast.error("Erro ao carregar produtos");
+      toast.error(`Erro ao carregar produtos: ${error.message}`);
     } else {
       setProducts(data || []);
     }
@@ -273,12 +273,16 @@ const Admin = () => {
                   <TableRow key={product.id}>
                     <TableCell>
                       <div className="flex items-center gap-3">
-                        {product.image_url && (
+                        {product.image_url ? (
                           <img
                             src={product.image_url}
                             alt={product.name}
                             className="w-10 h-10 rounded-lg object-cover bg-muted"
                           />
+                        ) : (
+                          <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                            <Package className="w-4 h-4 text-muted-foreground" />
+                          </div>
                         )}
                         <div>
                           <p className="font-medium text-foreground">{product.name}</p>
@@ -415,13 +419,27 @@ const Admin = () => {
               </div>
             </div>
             <div>
-              <Label htmlFor="image_url">URL da Imagem</Label>
-              <Input
-                id="image_url"
-                value={form.image_url}
-                onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-                placeholder="https://..."
-              />
+              <Label htmlFor="image_url">Imagem do Produto (URL)</Label>
+              <div className="flex items-start gap-3">
+                <div className="w-16 h-16 rounded-lg border border-border bg-muted overflow-hidden flex items-center justify-center shrink-0">
+                  {form.image_url ? (
+                    <img src={form.image_url} alt="Pré-visualização" className="w-full h-full object-cover" />
+                  ) : (
+                    <Package className="w-5 h-5 text-muted-foreground" />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <Input
+                    id="image_url"
+                    value={form.image_url}
+                    onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                    placeholder="/products/chia.jpg ou https://..."
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    As fotos da loja ficam em /products/ (ex: /products/chia.jpg)
+                  </p>
+                </div>
+              </div>
             </div>
             <div>
               <Label htmlFor="description">Descrição</Label>
