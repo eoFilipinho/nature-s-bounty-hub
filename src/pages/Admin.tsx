@@ -21,7 +21,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, ArrowLeft, Package } from "lucide-react";
+import { Plus, Pencil, Trash2, ArrowLeft, Package, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const CATEGORIES = ["Cereais", "Temperos", "Vitaminas", "Suplementação", "Chás", "Grãos e Sementes"];
@@ -61,6 +61,8 @@ const Admin = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("Todos");
   const fetchProducts = async () => {
     setLoading(true);
     const { data, error } = await supabase
@@ -223,22 +225,58 @@ const Admin = () => {
     }
   };
 
+  const filteredProducts = products.filter((p) => {
+    const matchesCategory = categoryFilter === "Todos" || p.category === categoryFilter;
+    const term = search.trim().toLowerCase();
+    const matchesSearch =
+      !term ||
+      p.name.toLowerCase().includes(term) ||
+      (p.description || "").toLowerCase().includes(term) ||
+      p.category.toLowerCase().includes(term);
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="bg-popover border-b border-border sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
+          <div className="flex items-center gap-3 shrink-0">
             <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <Package className="w-5 h-5 text-primary" />
-            <h1 className="text-lg font-semibold text-foreground">Gerenciar Produtos</h1>
+            <h1 className="text-lg font-semibold text-foreground hidden lg:block">Gerenciar Produtos</h1>
           </div>
-          <Button onClick={openCreate} className="gap-2">
-            <Plus className="w-4 h-4" />
-            Novo Produto
-          </Button>
+
+          <div className="flex-1 flex items-center justify-end gap-3">
+            <div className="relative w-full max-w-xs">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Buscar produto..."
+                className="pl-9"
+              />
+            </div>
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger className="w-[170px]">
+                <SelectValue placeholder="Categoria" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Todos">Todas as categorias</SelectItem>
+                {CATEGORIES.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {cat}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button onClick={openCreate} className="gap-2 shrink-0">
+              <Plus className="w-4 h-4" />
+              <span className="hidden sm:inline">Novo Produto</span>
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -255,6 +293,11 @@ const Admin = () => {
               Adicionar primeiro produto
             </Button>
           </div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="text-center py-20">
+            <Search className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+            <p className="text-muted-foreground">Nenhum produto encontrado para esta busca</p>
+          </div>
         ) : (
           <div className="rounded-lg border border-border overflow-hidden">
             <Table>
@@ -269,7 +312,7 @@ const Admin = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
                   <TableRow key={product.id}>
                     <TableCell>
                       <div className="flex items-center gap-3">
