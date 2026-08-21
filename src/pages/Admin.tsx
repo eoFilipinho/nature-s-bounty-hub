@@ -21,7 +21,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, ArrowLeft, Package } from "lucide-react";
+import { Plus, Pencil, Trash2, ArrowLeft, Package, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const CATEGORIES = ["Cereais", "Temperos", "Vitaminas", "Suplementação", "Chás", "Grãos e Sementes"];
