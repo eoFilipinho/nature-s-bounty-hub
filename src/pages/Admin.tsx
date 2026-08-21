@@ -273,12 +273,16 @@ const Admin = () => {
                   <TableRow key={product.id}>
                     <TableCell>
                       <div className="flex items-center gap-3">
-                        {product.image_url && (
+                        {product.image_url ? (
                           <img
                             src={product.image_url}
                             alt={product.name}
                             className="w-10 h-10 rounded-lg object-cover bg-muted"
                           />
+                        ) : (
+                          <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                            <Package className="w-4 h-4 text-muted-foreground" />
+                          </div>
                         )}
                         <div>
                           <p className="font-medium text-foreground">{product.name}</p>
