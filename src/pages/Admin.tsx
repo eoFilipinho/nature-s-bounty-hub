@@ -69,7 +69,7 @@ const Admin = () => {
       .order("created_at", { ascending: false });
 
     if (error) {
-      toast.error("Erro ao carregar produtos");
+      toast.error(`Erro ao carregar produtos: ${error.message}`);
     } else {
       setProducts(data || []);
     }
